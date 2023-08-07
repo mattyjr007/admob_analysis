@@ -42,6 +42,7 @@ dash_1 = st.container()
 dash_2 = st.container()
 dash_3 = st.container()
 dash_4 = st.container()
+dash_5 = st.container()
 
 
 
@@ -247,6 +248,103 @@ with dash_4:
 
             st.write("For none game studio owner the bar chart shows the distribution of their age range.")
 
+
+
+with dash_5:
+    
+
+    # questions dataframe
+    Q_df = df.copy()
+    # get all countries
+    all_countri= df.country.to_list()
+    all_countri.append("All")
+    all_countri = tuple(set(all_countri))
+    all_countri = sorted(all_countri)
+
+    factors = ("Power supply","High speed internet","Affordable internet","Training opportunities","Community events","Co-working space","Industry associations","Mobile network operators (like MTN or Safaricom)","Alternative payment methods (like mobile money)","Government support")
+     
+
+    st.write("")
+    st.write("")
+    st.markdown("<h2 style='text-align: center;'>Analysis on game development factors by countries</h2>", unsafe_allow_html=True)
+    st.write("")
+    #st.header("Analysis on game development factors by countries")
+    st.markdown("<p style='text-align: center;'>this analysis provide insights on some development factors in some countries and thier current states.</p>", unsafe_allow_html=True)
+    #st.write("this analysis provide insights on some development factors in some countries and thier current states.")
+
+    
+    d1,d2,d3 = st.columns(3)
+
+    with d2:
+        country_option = st.selectbox("Please select a country.",all_countri)
+
+    if country_option == "All":
+        current_df = Q_df
+        print(111111)
+        print(len(current_df))
+    else:
+        current_df = Q_df[Q_df['country'] == country_option]
+        print(len(current_df))
+
+    
+    st.write("")
+    # factor selecting 
+    e1,e2,e3 = st.columns(3)
+
+    with e2:
+         factor_slected = st.selectbox("Please select a factor to find out the responses based on importance and current state in the country selected.",
+                                       factors)
+         st.write("")
+         st.write("")
+
+
+    disp1, disp2 = st.columns(2)
+
+    with disp1:
+
+
+        importance = current_df[f"How important are the following to the development of the games industry in your country? [{factor_slected}]"].value_counts()
+        
+        fig_importance = go.Figure(data=[go.Bar(x=importance.index, y=importance.values,text=importance.values,
+                        textposition='auto',
+                        marker=dict(
+        color=importance.values,  # Use the values for coloring
+        colorscale='Blues',  # Specify the colorscale name
+       # Add a colorbar title
+    ))])
+        fig_importance.update_layout(showlegend=False,
+                             height=300,
+                             margin={'l': 20, 'r': 0, 't': 0, 'b': 5},
+                             )
+        
+        
+        
+        st.plotly_chart(fig_importance,use_container_width=True)
+        st.write(f"The Importance of {factor_slected} in {country_option}.")
+
+
+    
+    with disp2:
+
+
+        current_countri_state = current_df[f"How would you rate the current state of these infrastructure in your country? [{factor_slected}]"].value_counts()
+        
+        fig_current_countri_state = go.Figure(data=[go.Bar(x=current_countri_state.index, y=current_countri_state.values,text=current_countri_state.values,
+                        textposition='auto',
+                        marker=dict(
+        color=current_countri_state.values,  # Use the values for coloring
+        colorscale='Blues',  # Specify the colorscale name
+       # Add a colorbar title
+    ))])
+        fig_current_countri_state.update_layout(showlegend=False,
+                             height=300,
+                             margin={'l': 20, 'r': 0, 't': 0, 'b': 5},
+                             )
+        
+        
+        
+        st.plotly_chart(fig_current_countri_state,use_container_width=True)
+        st.write(f"The Current state of {factor_slected} in {country_option}.")
 
 
             
