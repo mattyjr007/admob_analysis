@@ -109,6 +109,7 @@ with dash_2:
 
         #fig.update_geos(projection_type='mercator')
         fig_map.update_layout(geo=dict(
+                bgcolor='rgba(0,0,0,0)',
                 scope='africa',
                 center=dict(lon=17, lat=3),
                 projection_scale=1.1),
@@ -280,11 +281,8 @@ with dash_5:
 
     if country_option == "All":
         current_df = Q_df
-        print(111111)
-        print(len(current_df))
     else:
         current_df = Q_df[Q_df['country'] == country_option]
-        print(len(current_df))
 
     
     st.write("")
