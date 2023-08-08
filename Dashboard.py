@@ -5,6 +5,8 @@ import plotly.figure_factory as ff
 import plotly.graph_objects as go
 import plotly.express as px
 from collections import Counter
+from wordcloud import WordCloud, STOPWORDS
+import matplotlib.pyplot as plt
 
 
 st.set_page_config(page_title="African Game Survey", page_icon="😊",layout="wide")
@@ -43,6 +45,7 @@ dash_2 = st.container()
 dash_3 = st.container()
 dash_4 = st.container()
 dash_5 = st.container()
+dash_6 = st.container()
 
 
 
@@ -345,7 +348,36 @@ with dash_5:
         st.write(f"The Current state of {factor_slected} in {country_option}.")
 
 
-            
+
+with dash_6:
+
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("")
+    st.write("The frequently occured words for the survey question `What type of support does the industry need to succeed?`")
+    st.write("")
+    st.write("")
+    text = " ".join(txt for txt in df['What type of support does the industry need to succeed?'])
+    
+    stopwords = set(STOPWORDS)
+
+    wordcloud = WordCloud(width = 800, height = 800,
+                background_color ='white',
+                stopwords = stopwords,
+                min_font_size = 10).generate(text)
+    
+ 
+    # plot the WordCloud image                      
+    plt.figure(figsize = (4, 4), facecolor = None,dpi=200)
+    plt.imshow(wordcloud)
+    plt.axis("off")
+    #plt.tight_layout(pad = 0)
+    # Plot the word cloud image with Streamlit
+    st.pyplot(plt,use_container_width=False)
+        
                 
 
 
